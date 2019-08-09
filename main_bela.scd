@@ -36,19 +36,19 @@ s.waitForBoot({
 				var sndInBus1, sndInBusOld1;
 				var resonator;
 				
-                // Chooses a random mic, delays the trigger by 1 frame so we sample and hold
-                // the old value to do a fade/transition
+				// Chooses a random mic, delays the trigger by 1 frame so we sample and hold
+				// the old value to do a fade/transition
 				sndInBus1 = TChoose.kr(Delay1.kr(trig_choose_new_input), ~mics);
 				sndInBusOld1 = Latch.kr(sndInBus1, trig_choose_new_input);
 
-                // Do the fadeIn and fadeOut with envelopes
+				// Do the fadeIn and fadeOut with envelopes
 				sndIn = SoundIn.ar(sndInBus1) * EnvGen.ar(Env.new([0.000001, 1.0], [0.7], \exp), trig_choose_new_input);
 				sndInOld = SoundIn.ar(sndInBusOld1) * EnvGen.ar(Env.new([1, 0.00000001], [0.9], \exp), trig_choose_new_input);
 
 				snd = Mix.ar([sndIn, sndInOld]);
 				snd = snd + DelayL.ar(snd*8, 5.0, delayTime.lag(3));
 
-                // Pitch tracking for modulating the feedback
+				// Pitch tracking for modulating the feedback
 				peak = Pitch.kr(snd, downSample: 3);
 				snd = MidEQ.ar(snd, peak[0].lag(Rand(0.2, 1.0)), 1, -24);
 
@@ -60,13 +60,13 @@ s.waitForBoot({
 
 				snd = snd + resonator;
 
-                // Those values were choosen for the specific location of ACUD
+				// Those values were choosen for the specific location of ACUD
 				snd = Limiter.ar(snd, 0.4, 0.1);
 				snd = LPF.ar(snd, LFNoise1.ar(1).range(3000, 6000));
 				Out.ar(outBus , snd * gain.lag(4));
 			}).add;
 
-            // If there are any synths, set the gain to zero to fade for the next settings
+			// If there are any synths, set the gain to zero to fade for the next settings
 			~speakers.do {|i|
 				if (~synths[i] != nil, {
 					~synths[i].set(\gain, 0);
@@ -77,7 +77,7 @@ s.waitForBoot({
 
 			~speakers.do {|i|
 				var gain = 0.1;
-                // The first two outputs use different amplifiers
+				// The first two outputs use different amplifiers
 				if (i < 2, { gain = 2.0 });
 				~synths[i].free; ~synths[i] = Synth(\fdbkFollower, [\outBus, i, \delayTime, rrand(0.08, 4.0), \gain, gain]);
 			};
