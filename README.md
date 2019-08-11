@@ -9,6 +9,8 @@ Outside agents, such as the visitors, might also influence the web by touching i
 
 The web's shape is determined by the location where it is installed, the composition follows a generative approach by re-routing, from time to time, which part of the web is being amplified by which agent.
 
+For video documentation please check the video at [vimeo](https://vimeo.com/352682080).
+
 
 # technical
 
